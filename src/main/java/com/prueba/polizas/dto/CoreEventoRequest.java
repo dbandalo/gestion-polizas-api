@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record CoreEventoRequest(
         @NotBlank(message = "El evento es obligatorio")
         String evento,
-        @NotNull(message = "El polizaId es obligatorio")
+        @NotNull(message = "El id de la póliza es obligatorio")
         Long polizaId
 ) {
 }

@@ -112,7 +112,7 @@ public class PolizaService {
             throw new BusinessException("No se pueden agregar riesgos a una póliza cancelada");
         }
         if (poliza.getTipo() != TipoPoliza.COLECTIVA) {
-            throw new BusinessException("Solo las pólizas colectivas permiten agregar riesgos. Una individual solo puede tener 1 riesgo");
+            throw new BusinessException("Solo las pólizas colectivas permiten agregar riesgos; una póliza individual tiene un único riesgo");
         }
 
         Riesgo riesgo = new Riesgo();
@@ -129,7 +129,7 @@ public class PolizaService {
     @Transactional
     public RiesgoResponse cancelarRiesgo(Long riesgoId) {
         Riesgo riesgo = riesgoRepository.findById(riesgoId)
-                .orElseThrow(() -> new ResourceNotFoundException("Riesgo no encontrado: " + riesgoId));
+                .orElseThrow(() -> new ResourceNotFoundException("No existe un riesgo con id " + riesgoId));
 
         if (riesgo.getEstado() == EstadoRiesgo.CANCELADO) {
             throw new BusinessException("El riesgo ya se encuentra cancelado");
@@ -139,7 +139,7 @@ public class PolizaService {
         if (poliza.getTipo() == TipoPoliza.INDIVIDUAL) {
             long activos = riesgoRepository.countByPolizaIdAndEstado(poliza.getId(), EstadoRiesgo.ACTIVO);
             if (activos <= 1) {
-                throw new BusinessException("Una póliza individual debe conservar su único riesgo activo; cancele la póliza completa");
+                throw new BusinessException("Una póliza individual no puede quedar sin su único riesgo; para retirarlo, cancele la póliza completa");
             }
         }
 
@@ -151,6 +151,6 @@ public class PolizaService {
 
     private Poliza obtenerPoliza(Long polizaId) {
         return polizaRepository.findById(polizaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Póliza no encontrada: " + polizaId));
+                .orElseThrow(() -> new ResourceNotFoundException("No existe una póliza con id " + polizaId));
     }
 }

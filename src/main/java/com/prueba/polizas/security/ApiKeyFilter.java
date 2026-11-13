@@ -32,7 +32,6 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
         return path.startsWith("/h2-console")
-                || path.equals("/actuator/health")
                 || "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 
@@ -48,7 +47,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                     Instant.now(),
                     HttpStatus.UNAUTHORIZED.value(),
                     HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                    "Header x-api-key inválido o ausente",
+                    "Falta el header x-api-key o su valor no es válido",
                     request.getRequestURI()
             );
             objectMapper.writeValue(response.getOutputStream(), body);

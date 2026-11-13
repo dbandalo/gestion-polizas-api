@@ -10,6 +10,6 @@ public class CoreIntegrationService {
     private static final Logger log = LoggerFactory.getLogger(CoreIntegrationService.class);
 
     public void registrarEvento(String evento, Long polizaId) {
-        log.info("CORE-MOCK: operación intentada. evento={}, polizaId={}", evento, polizaId);
+        log.info("CORE-MOCK: se intentó enviar el evento {} de la póliza {} al CORE", evento, polizaId);
     }
 }
